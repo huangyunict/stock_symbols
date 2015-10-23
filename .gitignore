@@ -1,0 +1,10 @@
+*.py[co]
+*.sw[op]
+*.egg-info/
+dist/
+
+# Cached files
+SP500.html
+
+# Python3
+*__pycache__/
