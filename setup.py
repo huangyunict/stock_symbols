@@ -3,12 +3,11 @@ import setuptools
 
 setup(
     name='stock_symbols',
-    version='0.5.0',
+    version='0.5.1',
     packages=['stock_symbols'],
     author='Yun Huang',
     author_email='huangyunict@gmail.com',
     description='Retrieves list of all symbols present in SP500, NASDAQ, AMEX and NYSE',
-    long_description=open('README.md').read(),
     url='https://github.com/huangyunict/stock_symbols',
     download_url='http://pypi.python.org/pypi/stock_symbols',
     keywords='stocks stockmarket yahoo finance SP500 NASDAQ AMEX NYSE'.split(),
