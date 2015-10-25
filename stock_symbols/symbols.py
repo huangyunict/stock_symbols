@@ -6,11 +6,21 @@ from bs4 import BeautifulSoup
 from stock_symbols.symbol_helper import *
 
 
+__work_dir = _get_default_work_dir()
+
+
+#   set working directory
+def set_work_dir(work_dir=""):
+    if not work_dir:
+        __work_dir = _get_default_work_dir()
+
+#   get working directory
+def get_work_dir():
+    return __work_dir
+
 #   pass in working path to avoid potential permission error
-def get_sp500_symbols(work_path=""):
-    if not work_path:
-        work_path = _get_default_work_path()
-    page_html = wiki_html('List_of_S%26P_500_companies', os.path.join(work_path, 'SP500.html'))
+def get_sp500_symbols():
+    page_html = wiki_html('List_of_S%26P_500_companies', os.path.join(get_work_dir(), 'SP500.html'))
     wiki_soup = BeautifulSoup(page_html, "html.parser")
     symbol_table = wiki_soup.find(attrs={'class': 'wikitable sortable'})
 
@@ -39,37 +49,31 @@ def get_sp500_symbols(work_path=""):
     return symbol_data_list[1::]
 
 
-def get_nyse_symbols(work_path=""):
-    if not work_path:
-        work_path = _get_default_work_path()
-    return _get_exchange_data("NYSE", work_path)
+def get_nyse_symbols():
+    return _get_exchange_data("NYSE")
 
 
-def get_amex_symbols(work_path=""):
-    if not work_path:
-        work_path = _get_default_work_path()
-    return _get_exchange_data("AMEX", work_path)
+def get_amex_symbols():
+    return _get_exchange_data("AMEX")
 
 
-def get_nasdaq_symbols(work_path=""):
-    if not work_path:
-        work_path = _get_default_work_path()
-    return _get_exchange_data("NASDAQ", work_path)
+def get_nasdaq_symbols():
+    return _get_exchange_data("NASDAQ")
 
 
-def _get_exchange_data(exchange, work_path):
+def _get_exchange_data(exchange):
     url = get_exchange_url(exchange)
-    file_path = os.path.join(work_path, exchange)
+    file_path = os.path.join(get_work_dir, exchange)
     if is_cached(file_path):
         with open(file_path, "r") as cached_file:
             symbol_data = cached_file.read()
     else:
       symbol_data = fetch_file(url)
       save_file(file_path, symbol_data)
-    
+
     return get_symbol_list(symbol_data, exchange)
 
 
-def _get_default_work_path():
+def _get_default_work_dir():
     return os.path.dirname(stock_symbols.__file__)
 
