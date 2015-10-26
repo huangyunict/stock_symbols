@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from bs4 import BeautifulSoup
 from stock_symbols.symbol_helper import *
 
 
-__work_dir = _get_default_work_dir()
+__work_dir = None
 
 
-#   set working directory
 def set_work_dir(work_dir=""):
     """Set working directory, used in following functions.
     :param work_dir: working directory. If passed in None or empty, using default working directory.
@@ -19,6 +20,9 @@ def get_work_dir():
     """Get working directory.
     :return: working directory.
     """
+    global __work_dir
+    if not __work_dir:
+        __work_dir = _get_default_work_dir()
     return __work_dir
 
 
@@ -61,7 +65,7 @@ def get_nyse_symbols():
 
 
 def get_amex_symbols():
-    """Get symbols from Amercan American Stock Exchange market.
+    """Get symbols from American Stock Exchange market.
     :return: Symbol list from AMEX market.
     """
     return _get_exchange_data("AMEX")
