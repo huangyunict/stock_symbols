@@ -22,13 +22,14 @@ def get_symbol_list(symbol_data,exchange_name):
     # We need to cut off the last row because it is a null string
     for row in symbol_data[1:-1]:
         symbol_data_dict = dict()
-        symbol_data_dict['symbol'] = row[0] 
-        symbol_data_dict['company'] = row[1] 
-        symbol_data_dict['sector'] = row[6] 
-        symbol_data_dict['industry'] = row[7] 
+        symbol_data_dict['symbol'] = row[0].strip()
+        symbol_data_dict['company'] = row[1].strip()
+        symbol_data_dict['sector'] = row[6].strip()
+        symbol_data_dict['industry'] = row[7].strip()
         #   append symbol data dictionary
         symbol_list.append(symbol_data_dict)
     return symbol_list
+
 
 def save_file(file_path,file_content):
     saved_file = open(file_path , "w")
