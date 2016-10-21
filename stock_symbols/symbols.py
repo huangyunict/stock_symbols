@@ -14,6 +14,8 @@ def set_work_dir(work_dir=""):
     global __work_dir
     if not work_dir:
         __work_dir = _get_default_work_dir()
+    else:
+        __work_dir = work_dir
 
 
 def get_work_dir():

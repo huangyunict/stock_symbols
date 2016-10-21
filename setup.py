@@ -3,7 +3,7 @@ import setuptools
 
 setup(
     name='stock_symbols',
-    version='0.5.1',
+    version='0.5.3',
     packages=['stock_symbols'],
     author='Yun Huang',
     author_email='huangyunict@gmail.com',
