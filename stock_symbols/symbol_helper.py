@@ -14,30 +14,36 @@ import csv
 import re
 
 
-def get_symbol_list(symbol_data,exchange_name):
+def get_symbol_list(symbol_data, exchange_name):
+
+    csv_file = exchange_name + '.csv'
+
     symbol_list = list()
-    symbol_data = symbol_data.replace('"', "")
     symbol_data = re.split("\r?\n", symbol_data)
 
     headers = symbol_data[0]
-    #symbol,company,sector,industry,headquaters
-    symbol_data = list(map(lambda x: x.split(","), symbol_data))
+    # symbol,company,sector,industry,headquarters
+    symbol_data = list(csv.reader(symbol_data, delimiter=','))
     # We need to cut off the last row because it is a null string
     for row in symbol_data[1:-1]:
         symbol_data_dict = dict()
-        symbol_data_dict['symbol'] = row[0].strip()
-        symbol_data_dict['company'] = row[1].strip()
-        symbol_data_dict['sector'] = row[6].strip()
-        symbol_data_dict['industry'] = row[7].strip()
-        #   append symbol data dictionary
+        symbol_data_dict['symbol'] = row[0]
+        symbol_data_dict['company'] = row[1]
+        symbol_data_dict['sector'] = row[6]
+        symbol_data_dict['industry'] = row[7]
+        # append symbol data dictionary
         symbol_list.append(symbol_data_dict)
     return symbol_list
 
 
-def save_file(file_path,file_content):
-    saved_file = open(file_path , "w")
-    saved_file.write(file_content)
-    saved_file.close()
+def save_file(file_path: str, file_data):
+    if isinstance(file_data, str):
+        with open(file_path, "w") as saved_file:
+            saved_file.write(file_data)
+    elif isinstance(file_data, bytes):
+        with open(file_path, "wb") as saved_file:
+            saved_file.write(file_data.encode('utf-8'))
+
 
 def get_exchange_url(exchange):
     return ("http://www.nasdaq.com/screening/companies-by-industry.aspx?"
@@ -66,7 +72,7 @@ def fetch_file(url):
     Gets and downloads files
     '''
     file_fetcher = urllib.build_opener()
-    file_fetcher.addheaders =  [('User-agent', 'Mozilla/5.0')]
+    file_fetcher.addheaders = [('User-agent', 'Mozilla/5.0')]
     file_data = file_fetcher.open(url).read()
     if isinstance(file_data, str):  # Python2
         return file_data
@@ -74,7 +80,7 @@ def fetch_file(url):
         return file_data.decode("utf-8")
 
 #   use full file path here
-def wiki_html(url,file_path):
+def wiki_html(url, file_path):
     '''
     Obtains html from Wikipedia
     Note: API exist but for my use case. Data returned was not parsable. Preferred to use html
@@ -82,11 +88,10 @@ def wiki_html(url,file_path):
     Ex. http://en.wikipedia.org/w/api.php?format=xml&action=query&titles=List_of_S%26P_500_companies&prop=revisions&rvprop=content
     '''
     if is_cached(file_path):
-        with open(file_path, "r") as sp500_file:
+        with open(file_path, "rb") as sp500_file:
             return sp500_file.read()
     else:
-        wiki_html = fetch_file('http://en.wikipedia.org/wiki/' + str(url))
-        #Save file to be used by cache
-        save_file(file_path,wiki_html)
+        wiki_html = fetch_file('http://en.wikipedia.org/wiki/{}'.format(url))
+        # Save file to be used by cache
+        save_file(file_path, wiki_html)
         return wiki_html
-
