@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
+# coding=utf-8
 
+import os
 from bs4 import BeautifulSoup
 from stock_symbols.symbol_helper import *
 
@@ -30,9 +32,9 @@ def get_work_dir():
 
 #   pass in working path to avoid potential permission error
 def get_sp500_symbols():
-    page_html = wiki_html("List_of_S%26P_500_companies", os.path.join(get_work_dir(), "SP500.html"))
+    page_html = wiki_html('List_of_S%26P_500_companies', os.path.join(get_work_dir(), 'SP500.html'))
     wiki_soup = BeautifulSoup(page_html, "html.parser")
-    symbol_table = wiki_soup.find(attrs={"class": "wikitable sortable"})
+    symbol_table = wiki_soup.find(attrs={'class': 'wikitable sortable'})
 
     symbol_data_list = list()
 
@@ -42,15 +44,15 @@ def get_sp500_symbols():
         td_count = 0
         for symbol_data in symbol_raw_data:
             if td_count == 0:
-                symbol_data_content["symbol"] = symbol_data.text.encode("utf-8")
+                symbol_data_content['symbol'] = symbol_data.text.encode('utf-8')
             elif td_count == 1:
-                symbol_data_content["company"] = symbol_data.text.encode("utf-8")
+                symbol_data_content['company'] = symbol_data.text.encode('utf-8')
             elif td_count == 3:
-                symbol_data_content["sector"] = symbol_data.text.encode("utf-8")
+                symbol_data_content['sector'] = symbol_data.text.encode('utf-8')
             elif td_count == 4:
-                symbol_data_content["industry"] = symbol_data.text.encode("utf-8")
+                symbol_data_content['industry'] = symbol_data.text.encode('utf-8')
             elif td_count == 5:
-                symbol_data_content["headquaters"] = symbol_data.text.encode("utf-8")
+                symbol_data_content['headquarters'] = symbol_data.text.encode('utf-8')
 
             td_count += 1
 
