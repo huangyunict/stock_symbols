@@ -29,6 +29,10 @@ def get_symbol_list(symbol_data, exchange_name):
         symbol_data_dict = dict()
         symbol_data_dict['symbol'] = row[0]
         symbol_data_dict['company'] = row[1]
+        try:
+            symbol_data_dict['ipo_year'] = int(row[5])
+        except ValueError:
+            symbol_data_dict['ipo_year'] = None
         symbol_data_dict['sector'] = row[6]
         symbol_data_dict['industry'] = row[7]
         # append symbol data dictionary
