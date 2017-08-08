@@ -83,6 +83,18 @@ def fetch_file(url):
     elif isinstance(file_data, bytes):  # Python3
         return file_data.decode("utf-8")
 
+
+def fetch_file_with_cache(url, file_path):
+    if is_cached(file_path):
+        with open(file_path, "rb") as f:
+            return f.read()
+    else:
+        html = fetch_file(url)
+        # Save file to be used by cache
+        save_file(file_path, html)
+        return html
+
+
 #   use full file path here
 def wiki_html(url, file_path):
     '''
@@ -91,11 +103,4 @@ def wiki_html(url, file_path):
     python-wikitools - http://code.google.com/p/python-wikitools/
     Ex. http://en.wikipedia.org/w/api.php?format=xml&action=query&titles=List_of_S%26P_500_companies&prop=revisions&rvprop=content
     '''
-    if is_cached(file_path):
-        with open(file_path, "rb") as sp500_file:
-            return sp500_file.read()
-    else:
-        wiki_html = fetch_file('http://en.wikipedia.org/wiki/{}'.format(url))
-        # Save file to be used by cache
-        save_file(file_path, wiki_html)
-        return wiki_html
+    return fetch_file_with_cache('http://en.wikipedia.org/wiki/{}'.format(url), file_path)
