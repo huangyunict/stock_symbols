@@ -65,7 +65,8 @@ def get_vanguard_symbols():
     """Get symbols from Vanguard Fund.
     :return: Symbol list from Vanguard Fund.
     """
-    pass
+    page_html = fetch_file_with_cache('https://investor.vanguard.com/mutual-funds/list#/mutual-funds/name/month-end-returns', 'Vanguard.html')
+    return []
 
 
 def get_nyse_symbols():
