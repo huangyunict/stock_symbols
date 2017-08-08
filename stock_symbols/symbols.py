@@ -62,6 +62,9 @@ def get_sp500_symbols():
 
 
 def get_vanguard_symbols():
+    """Get symbols from Vanguard Fund.
+    :return: Symbol list from Vanguard Fund.
+    """
     pass
 
 
