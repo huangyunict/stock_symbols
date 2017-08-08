@@ -61,6 +61,10 @@ def get_sp500_symbols():
     return symbol_data_list[1::]
 
 
+def get_vanguard_symbols():
+    pass
+
+
 def get_nyse_symbols():
     """Get symbols from New York Stock Exchange market.
     :return: Symbol list from NYSE market.
