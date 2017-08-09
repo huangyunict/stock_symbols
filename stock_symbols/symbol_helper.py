@@ -86,12 +86,12 @@ def fetch_file(url, referer=None):
         return file_data.decode("utf-8")
 
 
-def fetch_file_with_cache(url, file_path):
+def fetch_file_with_cache(url, file_path, referer=None):
     if is_cached(file_path):
         with open(file_path, "rb") as f:
             return f.read()
     else:
-        html = fetch_file(url)
+        html = fetch_file(url, referer)
         # Save file to be used by cache
         save_file(file_path, html)
         return html
