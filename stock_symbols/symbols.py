@@ -4,6 +4,7 @@
 import os
 from bs4 import BeautifulSoup
 from stock_symbols.symbol_helper import *
+import json
 
 
 __work_dir = None
@@ -70,6 +71,12 @@ def get_vanguard_symbols():
     fname = os.path.join(get_work_dir(), 'Vanguard.json')
     referer = 'https://investor.vanguard.com/mutual-funds/list'
     page_html = fetch_file_with_cache(url, fname, referer)
+    prefix = b'callback('
+    suffix = b')'
+    if page_html.startswith(prefix):
+        page_html = page_html[len(prefix):]
+    if page_html.endswith(suffix):
+        page_html = page_html[:-1]
     return []
 
 
