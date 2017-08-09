@@ -70,14 +70,31 @@ def get_vanguard_symbols():
     url = 'https://api.vanguard.com/rs/ire/01/ind/mf/month-end.jsonp'
     fname = os.path.join(get_work_dir(), 'Vanguard.json')
     referer = 'https://investor.vanguard.com/mutual-funds/list'
-    page_html = fetch_file_with_cache(url, fname, referer)
-    prefix = b'callback('
-    suffix = b')'
+    page_html = fetch_file_with_cache(url, fname, referer).decode('utf-8')
+    prefix = 'callback('
+    suffix = ')'
     if page_html.startswith(prefix):
         page_html = page_html[len(prefix):]
     if page_html.endswith(suffix):
         page_html = page_html[:-1]
-    return []
+    json_obj = json.loads(page_html)
+    symbol_list = list()
+    try:
+        for entity in json_obj['fund']['entity']:
+            entity_profile = entity['profile']
+            symbol_data_dict = dict()
+            symbol_data_dict['symbol'] = entity_profile['ticker']
+            symbol_data_dict['company'] = entity_profile['longName']
+            symbol_data_dict['industry'] = 'Fund'
+            try:
+                symbol_data_dict['ipo_date'] = entity_profile['inceptionDate']
+            except ValueError:
+                symbol_data_dict['ipo_date'] = None
+            # append symbol data dictionary
+            symbol_list.append(symbol_data_dict)
+    except KeyError as e:
+        print('KeyError: ' + str(e))
+    return symbol_list
 
 
 def get_nyse_symbols():
