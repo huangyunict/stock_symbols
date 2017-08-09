@@ -71,12 +71,14 @@ def is_cached(file_path):
         return True
 
 
-def fetch_file(url):
+def fetch_file(url, referer=None):
     '''
     Gets and downloads files
     '''
     file_fetcher = urllib.build_opener()
     file_fetcher.addheaders = [('User-agent', 'Mozilla/5.0')]
+    if referer:
+        file_fetcher.add_header('Referer', referer)
     file_data = file_fetcher.open(url).read()
     if isinstance(file_data, str):  # Python2
         return file_data
