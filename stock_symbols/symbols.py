@@ -66,6 +66,7 @@ def get_vanguard_symbols():
     :return: Symbol list from Vanguard Fund.
     """
     url = 'https://api.vanguard.com/rs/ire/01/ind/mf/month-end.jsonp?callback=angular.callbacks._1'
+    url = 'https://api.vanguard.com/rs/ire/01/ind/mf/month-end.jsonp'
     fname = os.path.join(get_work_dir(), 'Vanguard.json')
     referer = 'https://investor.vanguard.com/mutual-funds/list'
     page_html = fetch_file_with_cache(url, fname, referer)
