@@ -4,6 +4,7 @@ Obtains stock symbols and relating information for SP500, AMEX, NYSE, and NASDAQ
 
  * S&P 500 listings are obtained dynamically by parsing Wikipedia
  * AMEX,NYSE and NASDAQ are obtained by gathering NASDAQ data
+ * TODO: Shanghai / Shenzhen Exchange data
 
 This project is initially cloned from finsymbols.
 
